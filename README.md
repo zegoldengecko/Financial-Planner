@@ -1,6 +1,6 @@
 DESCRIPTION
 
-This is a full-stakc personal finance tracking applicaiton built with REACT, Node.js/Express, and SQLite3. It allows users to track income and expenses, categoriess transactions, analyse spending patterns, and view financial trends across monthly and yealry timeframes.
+This is a full‑stack personal finance tracking application built with React, Node.js/Express, and SQLite3. It allows users to track income and expenses, categorize transactions, analyze spending patterns, and view financial trends across both monthly and yearly timeframes.
 
 FEATURES
 User and Security
@@ -16,7 +16,7 @@ Transactions
 
 Stastistics and Insights
 - General statistics including months of runway, income to expense ratio, savings rate
-- Income and Expenses statistics showing change in income and expenses over time using both graphs and percentages
+- Income and Expense statistics showing change in income and expenses over time using both graphs and percentages
 - A trends page which shows the fastest growing income and expenses by category and the change in each category between two periods of time
 - Switch between monthly and yearly views
 
