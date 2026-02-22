@@ -1,4 +1,5 @@
 DESCRIPTION
+
 This is a full-stakc personal finance tracking applicaiton built with REACT, Node.js/Express, and SQLite3. It allows users to track income and expenses, categoriess transactions, analyse spending patterns, and view financial trends across monthly and yealry timeframes.
 
 FEATURES
