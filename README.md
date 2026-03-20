@@ -1,6 +1,7 @@
 DESCRIPTION
 
 This is a full‑stack personal finance tracking application built with React, Node.js/Express, and SQLite3. It allows users to track income and expenses, categorize transactions, analyze spending patterns, and view financial trends across both monthly and yearly timeframes. This was built to replace spreadsheets for personal budgeting with a focus on easy to read trend analysis.
+<img width="1658" height="875" alt="image" src="https://github.com/user-attachments/assets/d7ad29c3-6d7c-469b-bb66-7d1e8eaf53d8" />
 <img width="2535" height="1126" alt="image" src="https://github.com/user-attachments/assets/c3b12b7b-f46f-4d0c-b45c-331a44f74167" />
 <img width="2539" height="1144" alt="image" src="https://github.com/user-attachments/assets/f14225a7-1591-46d8-9adf-60d4e6e5d22b" />
 <img width="2182" height="1210" alt="image" src="https://github.com/user-attachments/assets/8525d3c1-59e9-415b-93af-57d28e0b59f2" />
