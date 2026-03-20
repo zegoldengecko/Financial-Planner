@@ -9,6 +9,7 @@ This is a full‑stack personal finance tracking application built with React, N
 <img width="2438" height="1203" alt="image" src="https://github.com/user-attachments/assets/1f3a914c-3a23-4760-a62a-5ca4cae15f09" />
 
 FEATURES
+
 User and Security
 - user registration and login
 - secure password hashing
