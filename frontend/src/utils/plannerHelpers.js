@@ -96,10 +96,13 @@ export async function addTransaction({ typeOption, categoryOption, amountValue, 
   const spending = getSpendingType(categoryOption);
 
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${process.env.REACT_APP_API_URL}/add`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify({ type: typeOption, category: categoryOption, spendingType: spending, amount, date: dateValue, description: descriptionValue }),
     });
 

@@ -1,5 +1,5 @@
 const database = require("../database");
-const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 // ---------------------- CONSTANTS ----------------------
 const {
@@ -9,22 +9,10 @@ const {
   DATE_MONTH_LENGTH,
   DATE_YEAR_LENGTH,
   DEFAULT_AMOUNT,
-  EMAIL_SENDER_NAME,
-  EMAIL_USER,
-  EMAIL_PASS
+  JWT_SECRET
 } = require("./Constants.js");
 
-// Setting up the transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: EMAIL_USER,
-    pass: EMAIL_PASS
-  }
-});
-
 // ---------------------- HELPERS ----------------------
-
 // Generates an SQL WHERE clause to filter transactions by a given date
 const getDateFilter = (date) => {
   if (!date || date === "overall") return "";
@@ -46,15 +34,21 @@ const getDateFilter = (date) => {
 
 // Enforces that a user is logged in
 function requireAuth(req, res, next) {
-  if (!req.session.userId) {
-    return res.status(401).json({ error: "Not authenticated" });
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Not authenticated" });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.userId = decoded.userId;
+    next();
+  } catch {
+    res.status(401).json({ error: "Invalid token" });
   }
-  next();
 }
 
 // Extract user ID and date query parameter from the request
 function getUserAndDate(req) {
-  return { userId: req.session.userId, date: req.query.date };
+  return { userId: req.userId, date: req.query.date };
 }
 
 // Calculates the total sum of transaction amounts over a period of time
@@ -129,23 +123,9 @@ async function handleCategoryAggregation(res, userId, date, type, responseKey) {
 
 // Gets data from a transaction
 function getTransactionData(req) {
-  const userId = req.session.userId;
+  const userId = req.userId;
   const { type, category, spendingType, amount, date, description } = req.body;
   return { userId, type, category, spendingType, amount, date, description };
-}
-
-// Sends a welcome email
-async function sendWelcomeEmail(email, username) {
-  try {
-    await transporter.sendMail({
-      from: `"${EMAIL_SENDER_NAME}" <${EMAIL_USER}>`,
-      to: email,
-      subject: "Welcome to the Financial Planner",
-      text: `Hi ${username}, thank you for registering for Financial Planner! Your account has been created.`,
-    });
-  } catch (err) {
-    console.error("Email failed:", err);
-  }
 }
 
 module.exports = {
@@ -155,6 +135,5 @@ module.exports = {
   handleTotalByType,
   handleLargestByType,
   handleCategoryAggregation,
-  getTransactionData,
-  sendWelcomeEmail
+  getTransactionData
 };

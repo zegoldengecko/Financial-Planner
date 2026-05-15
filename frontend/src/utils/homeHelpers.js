@@ -11,7 +11,6 @@ export async function login({ username, password, setError, navigate }) {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
         body: JSON.stringify({ username, password })
       });
 
@@ -25,6 +24,7 @@ export async function login({ username, password, setError, navigate }) {
 
       // Clear error messages
       setError("");
+      localStorage.setItem("token", data.token);
 
       // Navigate to planner page
       navigate("/planner", { state: { user: data.user } });

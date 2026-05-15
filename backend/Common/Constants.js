@@ -28,6 +28,7 @@ const EMAIL_USER = process.env.EMAIL_USER
 const EMAIL_PASS = process.env.EMAIL_PASS
 const EMAIL_SENDER_NAME = "Financial Planner";
 const DEFAULT_AMOUNT = 0;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = {
   TOP_LIMIT,

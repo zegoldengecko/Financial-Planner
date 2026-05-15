@@ -56,7 +56,10 @@ function Transactions() {
     // Fetching transactions
    const fetchTransactions = async () => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/transactions`, { credentials: "include" });
+            const token = localStorage.getItem("token"); 
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/transactions`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
             const data = await res.json();
             if (!res.ok) {
                 setError(data.error || "Failed to load transactions");
@@ -73,9 +76,10 @@ function Transactions() {
     const deleteTransaction = async (id) => {
         if (!window.confirm("Delete this transaction?")) return;
 
+        const token = localStorage.getItem("token"); 
         await fetch(`${process.env.REACT_APP_API_URL}/transactions/${id}`, {
             method: "DELETE",
-            credentials: "include"
+            headers: { "Authorization": `Bearer ${token}` }
         });
 
         fetchTransactions(); 
@@ -119,6 +123,8 @@ function Transactions() {
 
     // Saving Edits
     const saveEdit = async () => {
+        const token = localStorage.getItem("token"); 
+        
         // Validate fields using helper
         const errorMsg = validateTransaction({
             type: editForm.type,
@@ -145,8 +151,10 @@ function Transactions() {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/transactions/${editingTransaction.id}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     type: editForm.type,
                     category: editForm.category,
@@ -156,12 +164,14 @@ function Transactions() {
                     description: editForm.description
                 })
             });
+
             const data = await res.json();
             if (!res.ok) {
                 console.log(editForm)
                 setEditError(data.error || "Failed to update transaction");
                 return;
             }
+
             fetchTransactions();
             setEditingTransaction(null);
         } catch (err) {

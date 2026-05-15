@@ -2,10 +2,11 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 
 // ---------------------- FUNCTION TO SEND AN API REQUEST ----------------------
 async function apiRequest(endpoint, options = {}) {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-        credentials: "include",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
             ...(options.headers || {})
         },
         ...options
