@@ -1,4 +1,4 @@
-const BASE_URL = "https://financial-planner-x9s5.onrender.com/api";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 // ---------------------- FUNCTION TO SEND AN API REQUEST ----------------------
 async function apiRequest(endpoint, options = {}) {
