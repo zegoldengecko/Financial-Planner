@@ -74,7 +74,7 @@ app.post("/api/register", async (req, res) => {
       args: [email, username, hashedPassword]
     });
 
-    await sendWelcomeEmail(email, username);
+    sendWelcomeEmail(email, username);
     res.json({ message: "User registered successfully" });
   } catch (err) {
     console.error(err);
