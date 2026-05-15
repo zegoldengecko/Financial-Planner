@@ -56,7 +56,7 @@ function Transactions() {
     // Fetching transactions
    const fetchTransactions = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/transactions", { credentials: "include" });
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/transactions`, { credentials: "include" });
             const data = await res.json();
             if (!res.ok) {
                 setError(data.error || "Failed to load transactions");
@@ -73,7 +73,7 @@ function Transactions() {
     const deleteTransaction = async (id) => {
         if (!window.confirm("Delete this transaction?")) return;
 
-        await fetch(`http://localhost:5000/api/transactions/${id}`, {
+        await fetch(`${process.env.REACT_APP_API_URL}/transactions/${id}`, {
             method: "DELETE",
             credentials: "include"
         });
@@ -143,7 +143,7 @@ function Transactions() {
         }
 
         try {
-            const res = await fetch(`http://localhost:5000/api/transactions/${editingTransaction.id}`, {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/transactions/${editingTransaction.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",

@@ -96,7 +96,7 @@ export async function addTransaction({ typeOption, categoryOption, amountValue, 
   const spending = getSpendingType(categoryOption);
 
   try {
-    const response = await fetch("http://localhost:5000/api/add", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
