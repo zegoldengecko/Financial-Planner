@@ -18,14 +18,14 @@ const SAVINGS_DEPOSIT = "Deposit";
 const SAVINGS_WITHDRAWAL = "Withdrawal"; 
 
 // ---------------------- SERVER ----------------------
-const PORT = process.env.PORT || 5000;
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
-const SESSION_SECRET = process.env.SESSION_SECRET || "supersecretkey";
+const PORT = process.env.PORT
+const FRONTEND_URL = process.env.FRONTEND_URL
+const SESSION_SECRET = process.env.SESSION_SECRET
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const BCRYPT_SALT_ROUNDS = 10;
-const EMAIL_SERVICE = process.env.EMAIL_SERVICE || "gmail";
-const EMAIL_USER = process.env.EMAIL_USER || "financialplanner602@gmail.com";
-const EMAIL_PASS = process.env.EMAIL_PASS || "hxsh bnit gswf ghmg";
+const EMAIL_SERVICE = process.env.EMAIL_SERVICE
+const EMAIL_USER = process.env.EMAIL_USER
+const EMAIL_PASS = process.env.EMAIL_PASS
 const EMAIL_SENDER_NAME = "Financial Planner";
 const DEFAULT_AMOUNT = 0;
 

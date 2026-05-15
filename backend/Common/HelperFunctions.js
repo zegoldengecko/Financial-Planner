@@ -19,9 +19,11 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: EMAIL_USER,
-    pass: EMAIL_PASS 
+    pass: EMAIL_PASS
   }
 });
+
+// ---------------------- HELPERS ----------------------
 
 // Generates an SQL WHERE clause to filter transactions by a given date
 const getDateFilter = (date) => {
@@ -50,13 +52,13 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Extract user ID and date query paramter form the request
+// Extract user ID and date query parameter from the request
 function getUserAndDate(req) {
   return { userId: req.session.userId, date: req.query.date };
 }
 
 // Calculates the total sum of transaction amounts over a period of time
-function handleTotalByType(res, userId, date, type) {
+async function handleTotalByType(res, userId, date, type) {
   const dateFilter = getDateFilter(date);
 
   const query = `
@@ -67,14 +69,16 @@ function handleTotalByType(res, userId, date, type) {
       ${dateFilter}
   `;
 
-  database.get(query, [userId], (err, row) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ total: row?.total || DEFAULT_AMOUNT });
-  });
+  try {
+    const result = await database.execute({ sql: query, args: [userId] });
+    res.json({ total: result.rows[0]?.total || DEFAULT_AMOUNT });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
-// Retreives top N transactions by type
-function handleLargestByType(res, userId, date, type, responseKey) {
+// Retrieves top N transactions by type
+async function handleLargestByType(res, userId, date, type, responseKey) {
   const dateFilter = getDateFilter(date);
 
   const query = `
@@ -87,14 +91,16 @@ function handleLargestByType(res, userId, date, type, responseKey) {
     LIMIT ${TOP_LIMIT}
   `;
 
-  database.all(query, [userId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ [responseKey]: rows || [] });
-  });
+  try {
+    const result = await database.execute({ sql: query, args: [userId] });
+    res.json({ [responseKey]: result.rows || [] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
 // Aggregates transactions based on category
-function handleCategoryAggregation(res, userId, date, type, responseKey) {
+async function handleCategoryAggregation(res, userId, date, type, responseKey) {
   const dateFilter = getDateFilter(date);
 
   const query = `
@@ -107,16 +113,18 @@ function handleCategoryAggregation(res, userId, date, type, responseKey) {
     ORDER BY total DESC
   `;
 
-  database.all(query, [userId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const result = await database.execute({ sql: query, args: [userId] });
 
-    const formatted = (rows || []).map(row => ({
+    const formatted = (result.rows || []).map(row => ({
       name: row.category,
       value: row.total || DEFAULT_AMOUNT
     }));
 
     res.json({ [responseKey]: formatted });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
 // Gets data from a transaction

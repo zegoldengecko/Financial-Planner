@@ -1,41 +1,41 @@
-// db.js
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./users.db"); // creates users.db in project folder
+//db.js
+const { createClient } = require("@libsql/client");
 
-db.serialize(() => {
-  // Create users table if it doesn't exist
-  db.run(`
+const db = createClient({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
+
+async function initializeDatabase() {
+  // create users table if it doesn't exist
+  await db.execute(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT UNIQUE,
       username TEXT UNIQUE,
       password TEXT
     )
-  `, (err) => {
-    if (err) {
-      console.error("Error creating table", err.message);
-    }
-  });
+  `);
 
-  // Creating a transactions table if it doesn't exist
-  db.run(`
+  // creating a transactiosn table if it doesn't exist
+  await db.execute(`
     CREATE TABLE IF NOT EXISTS transactions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
-      type TEXT NOT NULL,           -- income or expense
+      type TEXT NOT NULL,
       category TEXT NOT NULL,
       spendingType TEXT NOT NULL,
       amount REAL NOT NULL,
-      date TEXT NOT NULL,           -- store as DD/MM/YYYY
+      date TEXT NOT NULL,
       description TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY(user_id) REFERENCES users(id)
     )
-  `, (err) => {
-    if (err) {
-      console.error("Error creating transactions table:", err.message);
-    }
-  });
-});
+  `);
+
+  console.log("Database initialized");
+}
+
+initializeDatabase().catch(console.error);
 
 module.exports = db;

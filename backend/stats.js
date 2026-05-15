@@ -42,7 +42,7 @@ router.get("/total-expenses", (req, res) => {
   handleTotalByType(res, userId, date, TYPE_EXPENSE);
 });
 
-router.get("/total-savings", (req, res) => {
+router.get("/total-savings", async (req, res) => {
   const { userId, date } = getUserAndDate(req);
   const dateFilter = getDateFilter(date);
 
@@ -60,10 +60,12 @@ router.get("/total-savings", (req, res) => {
       ${dateFilter}
   `;
 
-  database.get(query, [userId], (err, row) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ total: row?.total || DEFAULT_AMOUNT });
-  });
+  try {
+    const result = await database.execute({ sql: query, args: [userId] });
+    res.json({ total: result.rows[0]?.total || DEFAULT_AMOUNT });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ---------------------- TOP TRANSACTIONS ----------------------
@@ -86,7 +88,7 @@ const formatDateMMYYYY = (d) => {
   return d;
 };
 
-function handleFastestGrowing(res, userId, type, date, prevDate, responseKey) {
+async function handleFastestGrowing(res, userId, type, date, prevDate, responseKey) {
   if (!date || !prevDate) {
     return res.status(400).json({ error: "Error with dates" });
   }
@@ -125,17 +127,19 @@ function handleFastestGrowing(res, userId, type, date, prevDate, responseKey) {
     LIMIT ${TOP_LIMIT};
   `;
 
-  database.all(query, [dateRange, userId, userId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const result = await database.execute({ sql: query, args: [dateRange, userId, userId] });
 
-    const formatted = (rows || []).map(r => ({
+    const formatted = (result.rows || []).map(r => ({
       category: r.category,
       amount: Number(r.amount),
       date: r.date
     }));
 
     res.json({ [responseKey]: formatted });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
 router.get("/fastest-growing-income", (req, res) => {
@@ -162,7 +166,7 @@ router.get("/category-expenses", (req, res) => {
 });
 
 // ---------------------- SPENDING TYPE ----------------------
-router.get("/spending-type", (req, res) => {
+router.get("/spending-type", async (req, res) => {
   const { userId, date } = getUserAndDate(req);
   const dateFilter = getDateFilter(date);
 
@@ -176,20 +180,22 @@ router.get("/spending-type", (req, res) => {
     ORDER BY total DESC
   `;
 
-  database.all(query, [userId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const result = await database.execute({ sql: query, args: [userId] });
 
-    const formatted = (rows || []).map(row => ({
+    const formatted = (result.rows || []).map(row => ({
       name: row.type,
       value: row.total || DEFAULT_AMOUNT
     }));
 
     res.json({ expensesBySpendingType: formatted });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ---------------------- PERIOD TRANSACTIONS ----------------------
-router.get("/period-transactions", (req, res) => {
+router.get("/period-transactions", async (req, res) => {
   const { userId, date } = getUserAndDate(req);
 
   if (!date) return res.status(400).json({ error: "Date is required" });
@@ -239,21 +245,23 @@ router.get("/period-transactions", (req, res) => {
     return res.status(400).json({ error: "Invalid date format" });
   }
 
-  database.all(query, params, (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const result = await database.execute({ sql: query, args: params });
 
-    const formatted = (rows || []).map(row => ({
+    const formatted = (result.rows || []).map(row => ({
       period: row.period,
       income: row.income || DEFAULT_AMOUNT,
       expense: row.expense || DEFAULT_AMOUNT
     }));
 
     res.json({ data: formatted });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ---------------------- CATEGORY GROWTH ----------------------
-router.get("/category-growth", (req, res) => {
+router.get("/category-growth", async (req, res) => {
   const { userId, date } = getUserAndDate(req);
   const prevDate = req.query.prevDate;
 
@@ -291,17 +299,19 @@ router.get("/category-growth", (req, res) => {
     ORDER BY amount DESC
   `;
 
-  database.all(query, [dateRange, userId, userId, userId, userId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const result = await database.execute({ sql: query, args: [dateRange, userId, userId, userId, userId] });
 
-    const formatted = (rows || []).map(r => ({
+    const formatted = (result.rows || []).map(r => ({
       category: r.category,
       growth: Number(r.amount),
       type: r.type
     }));
 
     res.json({ changeInCategories: formatted });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
