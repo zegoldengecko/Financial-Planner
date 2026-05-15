@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://financial-planner-x9s5.onrender.com/api";
 
 // ---------------------- FUNCTION TO SEND AN API REQUEST ----------------------
 async function apiRequest(endpoint, options = {}) {
