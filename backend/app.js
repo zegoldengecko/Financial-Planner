@@ -13,13 +13,13 @@ const {
   FRONTEND_URL,
   BCRYPT_SALT_ROUNDS,
   JWT_SECRET
-} = require("./common/Constants.js");
+} = require("./Common/Constants.js");
 
 // ---------------------- HELPERS ----------------------
 const {
   requireAuth,
   getTransactionData
-} = require("./common/HelperFunctions.js");
+} = require("./Common/HelperFunctions.js");
 
 const app = express();
 
