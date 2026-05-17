@@ -1,4 +1,5 @@
 ![CI](https://github.com/zegoldengecko/Financial-Planner/actions/workflows/ci.yml/badge.svg)
+
 DESCRIPTION
 
 A full-stack personal finance tracking application built with React, Node.js/Express, and Turso. It allows users to track income and expenses, categorize transactions, analyze spending patterns, and 
