@@ -1,6 +1,8 @@
+![CI](https://github.com/zegoldengecko/Financial-Planner/actions/workflows/ci.yml/badge.svg)
 DESCRIPTION
 
-This is a full‑stack personal finance tracking application built with React, Node.js/Express, and SQLite3. It allows users to track income and expenses, categorize transactions, analyze spending patterns, and view financial trends across both monthly and yearly timeframes. This was built to replace spreadsheets for personal budgeting with a focus on easy to read trend analysis.
+A full-stack personal finance tracking application built with React, Node.js/Express, and Turso. It allows users to track income and expenses, categorize transactions, analyze spending patterns, and 
+view financial trends across both monthly and yearly timeframes. Built to replace spreadsheets for personal budgeting with a focus on easy-to-read trend analysis.
 <img width="1658" height="875" alt="image" src="https://github.com/user-attachments/assets/d7ad29c3-6d7c-469b-bb66-7d1e8eaf53d8" />
 <img width="2535" height="1126" alt="image" src="https://github.com/user-attachments/assets/c3b12b7b-f46f-4d0c-b45c-331a44f74167" />
 <img width="2539" height="1144" alt="image" src="https://github.com/user-attachments/assets/f14225a7-1591-46d8-9adf-60d4e6e5d22b" />
@@ -12,8 +14,9 @@ This is a full‑stack personal finance tracking application built with React, N
 FEATURES
 
 User and Security
-- user registration and login
-- secure password hashing
+- User registration and login
+- Secure password hashing via bcrypt
+- JWT-based authentication
 
 Transactions
 - add income and expenses
@@ -22,26 +25,21 @@ Transactions
 - categories such as rent, food, transport, discretionary, non-discretionary
 - sort transactions by traits (e.g. amount)
 
-Stastistics and Insights
+Statistics and Insights
 - General statistics including months of runway, income to expense ratio, savings rate
 - Income and Expense statistics showing change in income and expenses over time using both graphs and percentages
 - A trends page which shows the fastest growing income and expenses by category and the change in each category between two periods of time
 - Switch between monthly and yearly views
 
 Data Persistence
-- SQLite3 database
-- Persistent stroage of all user transactions linked to a user ID
+- Turso (cloud SQLite) database
+- Persistent storage of all user transactions linked to a user ID
 
 TECH STACK
 - Frontend: React (JS)
 - Backend: Node.js + Express
-- Database: SQLite3
-- Authentication: Password hashing through bcrypt
+- Database: Turso (SQLite)
+- Authentication: bcrypt + JSON Web Tokens (JWT)
+- Deployment: Render
 
-HOW TO USE
-1. clone the repository
-2. cd backend and run "npm install" to install dependencies
-3. start the backend server by running "node server.js" in the backend folder
-4. create a new terminal and navigate to the frontend folder
-5. run "npm install" in the frontend folder to install dependencies
-6. run "npm start" to launch the webpage
+See it in action at this link: https://financial-planner-oujw.onrender.com/ 
