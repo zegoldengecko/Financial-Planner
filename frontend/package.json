@@ -38,6 +38,11 @@
     "jest": "^27.5.1",
     "supertest": "^7.2.2"
   },
+  "jest": {
+  "testMatch": [
+    "<rootDir>/src/tests/**/*.{test,spec}.{js,jsx,ts,tsx}"
+  ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
