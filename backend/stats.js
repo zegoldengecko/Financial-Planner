@@ -17,7 +17,7 @@ const {
   SAVINGS_DEPOSIT,
   SAVINGS_WITHDRAWAL,
   DEFAULT_AMOUNT
-} = require("./Common/Constants.js");
+} = require("./common/Constants.js");
 
 // ---------------------- HELPERS ----------------------
 const {
@@ -27,7 +27,7 @@ const {
   handleTotalByType,
   handleLargestByType,
   handleCategoryAggregation
-} = require("./Common/HelperFunctions.js");
+} = require("./common/HelperFunctions.js");
 
 router.use(requireAuth);
 

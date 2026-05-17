@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,29 @@ jobs:
         run: npm install
         working-directory: frontend
 
-      - name: Run tests
+      - name: Run frontend tests
         run: npm test -- --watchAll=false
         working-directory: frontend
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: backend
+
+      - name: Run backend tests
+        run: npm test
+        working-directory: backend
+        env:
+          JWT_SECRET: test-secret
+          TURSO_DATABASE_URL: ""
+          TURSO_AUTH_TOKEN: ""
