@@ -32,8 +32,6 @@ const GeneralView = ({ totalIncome, totalExpenses, totalSavings, periodTransacti
         <StatCard title="Emergency Fund Estimate" value={`$${emergencyFund.toLocaleString()}`} colour={emergencyFund <= totalSavings ? "green" : "red"} />
         <StatCard title="Months of Runway" value={`${runway} months`} colour={runway >= MIN_RUNWAY_MONTHS ? "green" : "red"} />
       </div>
-
-      <ForecastCard title="Next Period Forecast" />
     </div>
   );
 };

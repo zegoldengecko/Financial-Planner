@@ -17,8 +17,6 @@ const ExpenseView = ({ totalExpenses, expenseChange, expenseChangePercent, large
         <PieGraphCard title="Expenses By Category" data={categoryExpenses} />
         <PieGraphCard title="Expenses By Type" data={categorySpendingType} />
       </div>
-
-      <ForecastCard title="Next Period Forecast" />
     </div>
   );
 };

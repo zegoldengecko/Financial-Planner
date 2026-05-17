@@ -16,8 +16,6 @@ const IncomeView = ({ totalIncome, incomeChange, incomeChangePercent, largestInc
         <GraphCard title="Income Over Time" data={periodIncome} lines={[{ dataKey: "income", color: INCOME_COLOUR }]} dataKeyX="period" />
         <PieGraphCard title="Income By Category" data={categoryIncome} />
       </div>
-
-      <ForecastCard title="Next Period Forecast" />
     </div>
   );
 };
