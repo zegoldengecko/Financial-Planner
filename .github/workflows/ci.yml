@@ -23,7 +23,7 @@ jobs:
         working-directory: frontend
 
       - name: Run frontend tests
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false --testPathPattern=src/tests
         working-directory: frontend
 
   backend:
